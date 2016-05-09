@@ -1,57 +1,98 @@
-http://www.people-press.org/category/datasets/?download=20059299
-
-#' Download dataset from GESIS
+#' Download datasets from the Pew Research Center
 #'
-#' Download dataset from GESIS identified by its Document Object Identifier (DOI) and filetype
+#' \code{pew_download} performs programmatic and reproducible downloads of survey datasets from the Pew Research Center 
 #'
-#' @param remDr Selenium remote driver created with \code{setup_gesis}.
-#' @param doi The unique identifier for the dataset to be downloaded (see details).
-#' @param filetype The filetype to be downloaded (usually only "dta" or "spss" available).
-#' @param purpose The purpose for which you are downloading the data set (see details).
+#' @param area One of the seven research areas of the Pew Research Center 
+#'  (see details).
+#' @param file_id The unique identifier (or optionally a vector of these identifiers)
+#'  for the dataset(s) to be downloaded (see details).
+#' @param name,org,phone,email Contact information to submit to Pew Research Center
+#'  (see details).
+#' @param download_dir The directory (relative to your working directory) to
+#'   which you will be downloading files from the Pew Research Center
 #' @param msg If TRUE, outputs a message showing which data set is being downloaded.
 #'
-#' @details Datasets reposited with GESIS are uniquely identified with a
-#'   numberic identifier called a "DOI". This identifier appears both in the URL
-#'   for a dataset's website, and on the website itself.
+#' @details The Pew Research Center has seven areas of research focus.  Pass one of the 
+#'  following strings to the \code{area} argument to specify which area generated
+#'  the datasets you want to download:
+#'  
+#'  \code{politics} U.S. Politics & Policy (the default)
+#'  
+#'  \code{journalism} Journalism & Media
+#'  
+#'  \code{internet} Internet, Science & Tech
+#'  
+#'  \code{religion} Religion & Public Life
+#'  
+#'  \code{hispanic} Hispanic Trends
+#'  
+#'  \code{global} Global Attitudes & Trends
+#'  
+#'  \code{socialtrends} Social & Demographic Trends
 #'
-#'   In addition to accepting the terms of use, you need to input a purpose for
-#'   downloading a data set. The options are as follows:
+#'  To avoid requiring others to edit your scripts to insert their own contact 
+#'  information, the default is set to fetch this information from the user's 
+#'  .Rprofile.  Before running \code{pew_download}, then, you should be sure to
+#'  first add these options to your .Rprofile as in the example below:
 #'
-#' 1. for scientific research (incl. PhD)
-#' 2. for reserach with commercial mandate
-#' 3. for teaching as lecturer
-#' 4. for my academic studies
-#' 5. for my final exam (e.g. bachelor or master)
-#' 6. for professional training and qualification
+#'  \code{
+#'   options("pew_name" = "Juanita Herrera",
+#'          "pew_org" = "Upper Midwest University",
+#'          "pew_phone" = "888-000-0000",
+#'          "pew_email" = "jherrera@uppermidwest.edu")
+#'  }
 #'
-#' @return Downloads a file.
+#' @return The function returns a downloaded zip file.
 #'
 #' @examples
 #' \dontrun{
-#' gesis_remDr <- setup_gesis(download_dir = "downloads")
-#' login_gesis(gesis_remDr, user = "myusername", pass = "mypassword")
-#' download_dataset(gesis_remDr, doi = 5928)
+#'  pew_download(file_id = c(20059299, 20058139), download_dir = "pew_data")
 #' }
 #'
 #' @export
-pew_download <- function(remDr, 
-                         area = "politics",
-                         file_no, 
+pew_download <- function(area = "politics",
+                         file_id, 
                          name = getOption("pew_name"),
                          org = getOption("pew_org"),
                          phone = getOption("pew_phone"),
                          email = getOption("pew_email"),
+                         download_dir = ".",
                          msg = TRUE) {
+
+  # Set Firefox properties to not open a download dialog
+  fprof <- RSelenium::makeFirefoxProfile(list(
+    browser.download.dir = paste0(getwd(), "/", download_dir),
+    browser.download.folderList = 2L,
+    browser.download.manager.showWhenStarting = FALSE,
+    browser.helperApps.neverAsk.saveToDisk = "application/zip"))
   
-  for (item in file_no) {  
+  # Set up server as open initial window
+  RSelenium::checkForServer()
+  RSelenium::startServer()
+  remDr <- RSelenium::remoteDriver(extraCapabilities = fprof)
+  remDr$open()
+
+  # Get list of current download directory contents
+  if (!dir.exists(download_dir)) dir.create(download_dir)
+  dd_old <- list.files(download_dir)
+  
+  # Loop through files
+  for (item in file_id) {  
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
     # build url
     if (area == "politics") {
       url <- paste0("http://www.people-press.org/category/datasets/?download=", item)
-    }
-    # need to add other Pew areas
-    
+    } else if (area == "journalism") {
+      url <- paste0("http://www.journalism.org/datasets/", item)
+    } else if (area == "internet") {
+      url <- paste0("http://www.pewinternet.org/datasets/", item)
+    } else if (area == "religion") {
+      url <- paste0("http://www.pewforum.org/datasets/", item)
+    } else {
+      url <- paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
+    } 
+
     remDr$navigate(url)
     
     remDr$findElement(using = "name", "Name")$sendKeysToElement(list(name))
@@ -63,7 +104,14 @@ pew_download <- function(remDr,
     remDr$findElement(using = "id", "submit")$clickElement()
     
     # Switch back to first window
-    #  remDr$closeWindow()
     remDr$switchToWindow(remDr$getWindowHandles()[[1]])
   }
+  
+  # Confirm that downloads are completed, then close driver
+  dd_new <- dd_cur[!list.files(download_dir) %in% dd_old]
+  while (any(grepl("\\.zip\\.part", dd_new))) {
+    Sys.sleep(1)
+    dd_new <- dd_cur[!list.files(download_dir) %in% dd_old]
+  }
+  remDr$close()
 }

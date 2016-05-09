@@ -1,6 +1,6 @@
 #' Download datasets from the Pew Research Center
 #'
-#' \code{pew_download} performs programmatic and reproducible downloads of survey datasets from the Pew Research Center 
+#' \code{pew_download} provides a programmatic and reproducible means to download survey datasets from the Pew Research Center 
 #'
 #' @param area One of the seven research areas of the Pew Research Center 
 #'  (see details).
@@ -93,6 +93,7 @@ pew_download <- function(area = "politics",
       url <- paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
     } 
 
+    # navigate to download page and fill in required contact information
     remDr$navigate(url)
     
     remDr$findElement(using = "name", "Name")$sendKeysToElement(list(name))
@@ -108,10 +109,12 @@ pew_download <- function(area = "politics",
   }
   
   # Confirm that downloads are completed, then close driver
-  dd_new <- dd_cur[!list.files(download_dir) %in% dd_old]
+  dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
   while (any(grepl("\\.zip\\.part", dd_new))) {
     Sys.sleep(1)
-    dd_new <- dd_cur[!list.files(download_dir) %in% dd_old]
+    dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
   }
   remDr$close()
+  
+  
 }

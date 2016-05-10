@@ -48,7 +48,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'  pew_download(file_id = c(20059299, 20058139), download_dir = "pew_data")
+#'  pew_download(file_id = c(20059299, 20058139))
 #' }
 #'
 #' @export
@@ -58,7 +58,7 @@ pew_download <- function(area = "politics",
                          org = getOption("pew_org"),
                          phone = getOption("pew_phone"),
                          email = getOption("pew_email"),
-                         download_dir = ".",
+                         download_dir = "pew_data",
                          msg = TRUE,
                          unzip = TRUE,
                          delete_zip = TRUE) {

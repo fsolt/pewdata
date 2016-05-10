@@ -9,8 +9,10 @@
 #' @param name,org,phone,email Contact information to submit to Pew Research Center
 #'  (see details).
 #' @param download_dir The directory (relative to your working directory) to
-#'   which you will be downloading files from the Pew Research Center
+#'   which files from the Pew Research Center will be downloaded.
 #' @param msg If TRUE, outputs a message showing which data set is being downloaded.
+#' @param unzip If TRUE, the downloaded zip files will be unzipped.
+#' @param delete_zip If TRUE, the downloaded zip files will be deleted.
 #'
 #' @details The Pew Research Center has seven areas of research focus.  Pass one of the 
 #'  following strings to the \code{area} argument to specify which area generated
@@ -33,7 +35,7 @@
 #'  To avoid requiring others to edit your scripts to insert their own contact 
 #'  information, the default is set to fetch this information from the user's 
 #'  .Rprofile.  Before running \code{pew_download}, then, you should be sure to
-#'  first add these options to your .Rprofile as in the example below:
+#'  add these options to your .Rprofile substituting your info for the example below:
 #'
 #'  \code{
 #'   options("pew_name" = "Juanita Herrera",
@@ -42,7 +44,7 @@
 #'          "pew_email" = "jherrera@uppermidwest.edu")
 #'  }
 #'
-#' @return The function returns a downloaded zip file.
+#' @return The function returns downloaded files.
 #'
 #' @examples
 #' \dontrun{
@@ -57,7 +59,9 @@ pew_download <- function(area = "politics",
                          phone = getOption("pew_phone"),
                          email = getOption("pew_email"),
                          download_dir = ".",
-                         msg = TRUE) {
+                         msg = TRUE,
+                         unzip = TRUE,
+                         delete_zip = TRUE) {
 
   # Set Firefox properties to not open a download dialog
   fprof <- RSelenium::makeFirefoxProfile(list(
@@ -70,7 +74,7 @@ pew_download <- function(area = "politics",
   RSelenium::checkForServer()
   RSelenium::startServer()
   remDr <- RSelenium::remoteDriver(extraCapabilities = fprof)
-  remDr$open()
+  remDr$open(silent = TRUE)
 
   # Get list of current download directory contents
   if (!dir.exists(download_dir)) dir.create(download_dir)
@@ -116,5 +120,10 @@ pew_download <- function(area = "politics",
   }
   remDr$close()
   
-  
+  if (unzip == TRUE) {
+    lapply(dd_new, function(x) unzip(paste0(download_dir, "/", x), exdir = paste0(download_dir, "/", gsub(".zip", "", x))))
+  }
+  if (delete_zip == TRUE) {
+    invisible(file.remove(paste0(download_dir, "/", dd_new)))
+  }
 }

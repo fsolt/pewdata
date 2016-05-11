@@ -7,8 +7,8 @@ Authors@R: c(
     person("Frederick", "Solt", email = "frederick-solt@uiowa.edu", role = c("aut", "cre")),
     person("Eric", "Persson", email = "expersso5@gmail.com", role = c("ctb")))
 Description: Reproducible, programmatic retrieval of survey datasets from the
-    Pew Research Center
-License: MIT
+    Pew Research Center.
+License: MIT + file LICENSE
 LazyData: TRUE
 Suggests:
     knitr

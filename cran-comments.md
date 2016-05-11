@@ -4,9 +4,8 @@
 * win-builder (R Under development (unstable) (2016-05-10 r70594))
 
 ## R CMD check results
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 notes
 
-1 note from win-builder:
 * checking CRAN incoming feasibility ... NOTE
 
 This is the first submission of `pewdata`.

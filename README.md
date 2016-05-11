@@ -1,4 +1,5 @@
 [![CRAN version](http://www.r-pkg.org/badges/version/pewdata)](https://cran.r-project.org/web/packages/dotwhisker/index.html) ![](http://cranlogs.r-pkg.org/badges/grand-total/pewdata)
+[![Travis-CI Build Status](https://travis-ci.org/fsolt/pewdata.svg?branch=master)](https://travis-ci.org/fsolt/pewdata)
 ------------------------------------------------------------------------
 pewdata
 =========

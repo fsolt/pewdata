@@ -1,4 +1,4 @@
-[![CRAN version](http://www.r-pkg.org/badges/version/pewdata)](https://cran.r-project.org/web/packages/pewdata/index.html) ![](http://cranlogs.r-pkg.org/badges/grand-total/pewdata) [![Travis-CI Build Status](https://travis-ci.org/fsolt/pewdata.svg?branch=master)](https://travis-ci.org/fsolt/pewdata)
+[![CRAN version](http://www.r-pkg.org/badges/version/pewdata)](https://cran.r-project.org/package=pewdata) ![](http://cranlogs.r-pkg.org/badges/grand-total/pewdata) [![Travis-CI Build Status](https://travis-ci.org/fsolt/pewdata.svg?branch=master)](https://travis-ci.org/fsolt/pewdata)
 ------------------------------------------------------------------------
 pewdata
 =========

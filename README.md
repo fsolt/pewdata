@@ -1,5 +1,4 @@
-[![CRAN version](http://www.r-pkg.org/badges/version/pewdata)](https://cran.r-project.org/web/packages/dotwhisker/index.html) ![](http://cranlogs.r-pkg.org/badges/grand-total/pewdata)
-[![Travis-CI Build Status](https://travis-ci.org/fsolt/pewdata.svg?branch=master)](https://travis-ci.org/fsolt/pewdata)
+[![CRAN version](http://www.r-pkg.org/badges/version/pewdata)](https://cran.r-project.org/web/packages/dotwhisker/index.html) ![](http://cranlogs.r-pkg.org/badges/grand-total/pewdata) [![Travis-CI Build Status](https://travis-ci.org/fsolt/pewdata.svg?branch=master)](https://travis-ci.org/fsolt/pewdata)
 ------------------------------------------------------------------------
 pewdata
 =========
@@ -13,3 +12,5 @@ if (!require(ghit)) install.packages("ghit")
 ghit::install_github("fsolt/pewdata")
 ```
 Note that `pewdata` depends on the Firefox browser; if you don't already have it installed on your machine, [get it here](https://www.mozilla.org/firefox).
+
+For more details, check out [the vignette](https://github.com/fsolt/pewdata/blob/master/vignettes/pewdata-vignette.Rmd).

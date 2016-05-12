@@ -7,5 +7,8 @@
 0 errors | 0 warnings | 1 notes
 
 * checking CRAN incoming feasibility ... NOTE
+Maintainer: ‘Frederick Solt <frederick-solt@uiowa.edu>’
+
+New submission
 
 This is the first submission of `pewdata`.

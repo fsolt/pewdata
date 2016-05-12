@@ -11,9 +11,9 @@ Description: Reproducible, programmatic retrieval of survey datasets from the
 License: MIT + file LICENSE
 LazyData: TRUE
 Suggests:
-    knitr
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 Imports:
     RSelenium
 RoxygenNote: 5.0.1
-

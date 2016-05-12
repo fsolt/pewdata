@@ -5,8 +5,8 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{pewdata: Reproducible Retrieval of Pew Research Center Datasets}
-  %\VignetteEngine{rmarkdown::render}
-  %\VignetteEncoding{ASCII}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -64,7 +64,7 @@ To download this dataset reproducibly:
 pew_download(area = "religion", file_id = "global-restrictions-on-religion-2007-2013")
 ```
 
-Multiple datasets may be downloaded from the same research area in a single command by passing a vector of ids to `file_id`.  The following downloads the Weekly Survey of September 3-7, 2015; the July 2015 Political Survey; and the May 2015 Political Survey from the U.S. Politics & Policy area:
+Multiple datasets may be downloaded from the same research area in a single command by passing a vector of ids to `file_id`.  The following downloads the Weekly Survey of September 3-7, 2015; the July 2015 Political Survey; and the May 2015 Political Survey from the U.S. Politics & Policy area (which is the default for `area`):
 
 ```{r eval=FALSE}
 pew_download(file_id = c(20059613, 20059299, 20058139))
@@ -73,4 +73,3 @@ pew_download(file_id = c(20059613, 20059299, 20058139))
 After the needed datasets are downloaded, they are, by default, unzipped and ready to be loaded into R using, e.g., `haven::read_sav` or `rio::import`.
 
 [^1]: The terms _do_ include an exception that one "may incorporate limited portions of the Data in scholarly, research or academic publications or for the purposes of news reporting" with attribution, but this would appear inadequate for the purposes of reproducibility.
-

@@ -103,7 +103,7 @@ pew_download <- function(area = "politics",
   # Loop through files
   sapply(file_id, function(item){
     # show process
-    #if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
+    if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
     # build url
     url <- switch(area,
@@ -127,9 +127,7 @@ pew_download <- function(area = "politics",
       unlist %>% .[length(.)]  # extract the zip file name 
     file_dir <-  paste0(file.path(download_dir, fileName))
     writeBin(httr::content(output$response, "raw"), file_dir)
-    
-    
-    
+
   })
   
   

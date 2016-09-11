@@ -97,21 +97,29 @@ pew_download <- function(area = "politics",
   dd_old <- list.files(download_dir)
   
   # Loop through files
-  for (item in file_id) {  
+  sapply(file_id, function(item){
+    # show process
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
     # build url
-    if (area == "politics") {
-      url <- paste0("http://www.people-press.org/category/datasets/?download=", item)
-    } else if (area == "journalism") {
-      url <- paste0("http://www.journalism.org/datasets/", item)
-    } else if (area == "internet") {
-      url <- paste0("http://www.pewinternet.org/datasets/", item)
-    } else if (area == "religion") {
-      url <- paste0("http://www.pewforum.org/datasets/", item)
-    } else {
-      url <- paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
-    } 
+    url <- switch(area,
+                  politics = paste0("http://www.people-press.org/category/datasets/?download=", item),
+                  journalism = paste0("http://www.journalism.org/datasets/", item),
+                  internet = paste0("http://www.pewinternet.org/datasets/", item),
+                  religion = paste0("http://www.pewforum.org/datasets/", item),
+                  # default
+                  paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
+                  )
+    
+    
+    
+    
+  })
+  
+  
+  
+  
+  for (item in file_id) {  
 
     # navigate to download page and fill in required contact information
     remDr$navigate(url)

@@ -58,23 +58,39 @@ pew_download <- function(area = "politics",
                          org = getOption("pew_org"),
                          phone = getOption("pew_phone"),
                          email = getOption("pew_email"),
+                         change = FALSE,
                          download_dir = "pew_data",
                          msg = TRUE,
                          unzip = TRUE,
                          delete_zip = TRUE) {
-
-  # Set Firefox properties to not open a download dialog
-  fprof <- RSelenium::makeFirefoxProfile(list(
-    browser.download.dir = paste0(getwd(), "/", download_dir),
-    browser.download.folderList = 2L,
-    browser.download.manager.showWhenStarting = FALSE,
-    browser.helperApps.neverAsk.saveToDisk = "application/zip"))
+  # Detect the login info
+  if (change){
+    name <- org <- phone <- email <- NULL
+  }
   
-  # Set up server as open initial window
-  RSelenium::checkForServer()
-  RSelenium::startServer()
-  remDr <- RSelenium::remoteDriver(extraCapabilities = fprof)
-  remDr$open(silent = TRUE)
+  if (is.null(name)){
+    pew_name <- readline(prompt = "Please enter the name to register the download: \n")
+    options("pew_name" = pew_name)
+    name <- getOption("pew_name")
+  }
+  
+  if (is.null(org)){
+    pew_org <- readline(prompt = "Please enter the organization to register the download: \n")
+    options("pew_org" = pew_org)
+    org <- getOption("pew_org")
+  }
+  
+  if (is.null(phone)){
+    pew_phone = readline(prompt = "Please enter the phone to register the download: \n")
+    options("pew_phone" = pew_phone)
+    phone <-  getOption("pew_phone")
+  }
+  
+  if (is.null(email)){
+    pew_email <- readline(prompt = "Please enter the email to register the download: \n")
+    options("pew_email" = pew_email)
+    email <- getOption("pew_email")
+  }
 
   # Get list of current download directory contents
   if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)

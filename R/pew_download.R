@@ -92,14 +92,18 @@ pew_download <- function(area = "politics",
     email <- getOption("pew_email")
   }
 
+  
+  
   # Get list of current download directory contents
   if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
   dd_old <- list.files(download_dir)
   
+  
+  
   # Loop through files
   sapply(file_id, function(item){
     # show process
-    if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
+    #if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
     # build url
     url <- switch(area,
@@ -111,6 +115,18 @@ pew_download <- function(area = "politics",
                   paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
                   )
     
+    s <- html_session(url)
+    form <- html_form(s)[[1]] %>% 
+      set_values(Name = name,
+                 Organization= org,
+                 Phone = phone,
+                 Email = email) 
+
+    output <- submit_form(s, form)
+    fileName <- strsplit(output$response$url, "[/]") %>% 
+      unlist %>% .[length(.)]  # extract the zip file name 
+    file_dir <-  paste0(file.path(download_dir, fileName))
+    writeBin(httr::content(output$response, "raw"), file_dir)
     
     
     
@@ -121,20 +137,7 @@ pew_download <- function(area = "politics",
   
   for (item in file_id) {  
 
-    # navigate to download page and fill in required contact information
-    remDr$navigate(url)
-    
-    remDr$findElement(using = "name", "Name")$sendKeysToElement(list(name))
-    remDr$findElement(using = "name", "Organization")$sendKeysToElement(list(org))
-    remDr$findElement(using = "name", "Phone")$sendKeysToElement(list(phone))
-    remDr$findElement(using = "name", "Email")$sendKeysToElement(list(email))
-    
-    remDr$findElement(using = "id", "Agreement")$clickElement()
-    remDr$findElement(using = "id", "submit")$clickElement()
-    
-    # Switch back to first window
-    remDr$switchToWindow(remDr$getWindowHandles()[[1]])
-  }
+  
   
   # Confirm that downloads are completed, then close driver
   dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]

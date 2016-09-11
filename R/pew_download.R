@@ -127,28 +127,24 @@ pew_download <- function(area = "politics",
       unlist %>% .[length(.)]  # extract the zip file name 
     file_dir <-  paste0(file.path(download_dir, fileName))
     writeBin(httr::content(output$response, "raw"), file_dir)
-
+    
+    # Confirm that downloads are completed, then unzip the files
+    # dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
+    # while (any(grepl("\\.zip\\.part", dd_new))) {
+    #   Sys.sleep(1)
+    #   dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
+    # }
+    # 
+    # if (unzip == TRUE) {
+    #     lapply(dd_new, function(x) unzip(paste0(download_dir, "/", x), exdir = paste0(download_dir, "/", gsub(".zip", "", x))))
+    # }
+    # 
+    # if (delete_zip == TRUE) {
+    #   invisible(file.remove(paste0(download_dir, "/", dd_new)))
+    # }
+  
   })
-  
-  
-  
-  
-  for (item in file_id) {  
-
-  
-  
-  # Confirm that downloads are completed, then close driver
-  dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
-  while (any(grepl("\\.zip\\.part", dd_new))) {
-    Sys.sleep(1)
-    dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
-  }
-  remDr$close()
-  
-  if (unzip == TRUE) {
-    lapply(dd_new, function(x) unzip(paste0(download_dir, "/", x), exdir = paste0(download_dir, "/", gsub(".zip", "", x))))
-  }
-  if (delete_zip == TRUE) {
-    invisible(file.remove(paste0(download_dir, "/", dd_new)))
-  }
 }
+  
+  
+  

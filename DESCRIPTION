@@ -1,7 +1,7 @@
 Package: pewdata
 Type: Package
 Title: Reproducible Retrieval of Pew Research Center Datasets
-Version: 0.1.1
+Version: 0.2.0
 Date: 2016-07-14
 Authors@R: c(
     person("Frederick", "Solt", email = "frederick-solt@uiowa.edu", role = c("aut", "cre")),
@@ -15,5 +15,7 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Imports:
-    RSelenium
+    rvest,
+    dplyr,
+    httr
 RoxygenNote: 5.0.1

@@ -8,6 +8,7 @@
 #'  for the dataset(s) to be downloaded (see details).
 #' @param name,org,phone,email Contact information to submit to Pew Research Center
 #'  (see details).
+#' @param reset If TRUE, the register information will be reset. The default is FALSE.
 #' @param download_dir The directory (relative to your working directory) to
 #'   which files from the Pew Research Center will be downloaded.
 #' @param msg If TRUE, outputs a message showing which data set is being downloaded.
@@ -58,13 +59,13 @@ pew_download <- function(area = "politics",
                          org = getOption("pew_org"),
                          phone = getOption("pew_phone"),
                          email = getOption("pew_email"),
-                         change = FALSE,
+                         reset = FALSE,
                          download_dir = "pew_data",
                          msg = TRUE,
                          unzip = TRUE,
                          delete_zip = TRUE) {
   # Detect the login info
-  if (change){
+  if (reset){
     name <- org <- phone <- email <- NULL
   }
   
@@ -128,20 +129,9 @@ pew_download <- function(area = "politics",
     file_dir <-  paste0(file.path(download_dir, fileName))
     writeBin(httr::content(output$response, "raw"), file_dir)
     
-    # Confirm that downloads are completed, then unzip the files
-    # dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
-    # while (any(grepl("\\.zip\\.part", dd_new))) {
-    #   Sys.sleep(1)
-    #   dd_new <- list.files(download_dir)[!list.files(download_dir) %in% dd_old]
-    # }
-    # 
-    # if (unzip == TRUE) {
-    #     lapply(dd_new, function(x) unzip(paste0(download_dir, "/", x), exdir = paste0(download_dir, "/", gsub(".zip", "", x))))
-    # }
-    # 
-    # if (delete_zip == TRUE) {
-    #   invisible(file.remove(paste0(download_dir, "/", dd_new)))
-    # }
+    if (unzip == TRUE) unzip(file_dir, exdir = paste0(download_dir, "/", gsub(".zip", "", fileName)))
+
+    if (delete_zip == TRUE) invisible(file.remove(file_dir))
   
   })
 }

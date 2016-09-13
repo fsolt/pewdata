@@ -6,8 +6,9 @@
 \usage{
 pew_download(area = "politics", file_id, name = getOption("pew_name"),
   org = getOption("pew_org"), phone = getOption("pew_phone"),
-  email = getOption("pew_email"), download_dir = "pew_data", msg = TRUE,
-  unzip = TRUE, delete_zip = TRUE)
+  email = getOption("pew_email"), reset = FALSE,
+  download_dir = "pew_data", msg = TRUE, unzip = TRUE,
+  delete_zip = TRUE)
 }
 \arguments{
 \item{area}{One of the seven research areas of the Pew Research Center 
@@ -18,6 +19,8 @@ for the dataset(s) to be downloaded (see details).}
 
 \item{name, org, phone, email}{Contact information to submit to Pew Research Center
 (see details).}
+
+\item{reset}{If TRUE, the register information will be reset. The default is FALSE.}
 
 \item{download_dir}{The directory (relative to your working directory) to
 which files from the Pew Research Center will be downloaded.}

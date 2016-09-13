@@ -52,7 +52,11 @@
 #'  pew_download(file_id = c(20059299, 20058139))
 #' }
 #'
+#' @importFrom rvest html_session html_form set_values submit_form
+#' @importFrom magrittr "%>%"
+#' 
 #' @export
+
 pew_download <- function(area = "politics",
                          file_id, 
                          name = getOption("pew_name"),
@@ -64,6 +68,7 @@ pew_download <- function(area = "politics",
                          msg = TRUE,
                          unzip = TRUE,
                          delete_zip = TRUE) {
+  
   # Detect the login info
   if (reset){
     name <- org <- phone <- email <- NULL
@@ -93,16 +98,12 @@ pew_download <- function(area = "politics",
     email <- getOption("pew_email")
   }
 
-  
-  
   # Get list of current download directory contents
   if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
   dd_old <- list.files(download_dir)
   
-  
-  
   # Loop through files
-  sapply(file_id, function(item){
+  sapply(file_id, function(item) {
     # show process
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
@@ -123,13 +124,13 @@ pew_download <- function(area = "politics",
                  Phone = phone,
                  Email = email) 
 
-    output <- submit_form(s, form)
-    fileName <- strsplit(output$response$url, "[/]") %>% 
-      unlist %>% .[length(.)]  # extract the zip file name 
-    file_dir <-  paste0(file.path(download_dir, fileName))
+    suppressMessages(output <- submit_form(s, form))
+    file_name <- strsplit(output$response$url, "[/]") %>% 
+      unlist() %>% .[length(.)]  # extract the zip file name 
+    file_dir <- paste0(file.path(download_dir, file_name))
     writeBin(httr::content(output$response, "raw"), file_dir)
     
-    if (unzip == TRUE) unzip(file_dir, exdir = paste0(download_dir, "/", gsub(".zip", "", fileName)))
+    if (unzip == TRUE) unzip(file_dir, exdir = paste0(download_dir, "/", gsub(".zip", "", file_name)))
 
     if (delete_zip == TRUE) invisible(file.remove(file_dir))
   

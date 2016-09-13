@@ -54,6 +54,7 @@
 #'
 #' @importFrom rvest html_session html_form set_values submit_form
 #' @importFrom magrittr "%>%"
+#' @importFrom purrr walk
 #' 
 #' @export
 
@@ -103,7 +104,7 @@ pew_download <- function(area = "politics",
   dd_old <- list.files(download_dir)
   
   # Loop through files
-  sapply(file_id, function(item) {
+  file_id %>% walk(function(item) {
     # show process
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     

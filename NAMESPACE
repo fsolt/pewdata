@@ -2,6 +2,7 @@
 
 export(pew_download)
 importFrom(magrittr,"%>%")
+importFrom(purrr,walk)
 importFrom(rvest,html_form)
 importFrom(rvest,html_session)
 importFrom(rvest,set_values)

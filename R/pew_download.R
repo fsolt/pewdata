@@ -127,7 +127,8 @@ pew_download <- function(area = "politics",
 
     suppressMessages(output <- submit_form(s, form))
     file_name <- strsplit(output$response$url, "[/]") %>% 
-      unlist() %>% .[length(.)]  # extract the zip file name 
+      unlist() 
+    file_name <- file_name[length(file_name)]  # extract the zip file name 
     file_dir <- paste0(file.path(download_dir, file_name))
     writeBin(httr::content(output$response, "raw"), file_dir)
     

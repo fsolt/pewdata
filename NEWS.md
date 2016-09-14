@@ -5,7 +5,8 @@
     + Overwrote the `for` loop by a `sapply` function.
 1. More user-friendly
     + Users do not need to set up the `.Rprofile` by themselves. If the informaiton is missing the function will automatically call an input request at the terminal to ask for required information for the downloading.
-    + One can reset the register information stored in the `.Rprofile` by switching the argument `reset` to `TRUE`. 
+    + Users can reset the register information stored in the `.Rprofile` by switching the argument `reset` to `TRUE`. 
+    + The function no longer relies on the Firefox browser.
 
 
 ## Version 0.1.1

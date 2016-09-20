@@ -1,6 +1,6 @@
 ---
 title: "pewdata: Reproducible Retrieval of Pew Research Center Datasets"
-author: "Frederick Solt"
+author: ["Frederick Solt", "Yue Hu"]
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -14,12 +14,10 @@ The [Pew Research Center](http://www.pewresearch.org), in its [own words](http:/
 
 ## Setup
 
-As users run the `pew_download` function in `pewdata` at the first time, they will be asked to input the necessary information, including the name, organization, phone, and email. 
-Once the information is input, it will be saved in the `.Rprofile` that the function will automatically use in future.
+When run for the first time, the `pew_download` function will be ask for the information requested by Pew of those wishing to download its datasets: name, organization, phone, and email. 
+After that information is input once, it will be saved in the `.Rprofile` and used automatically.
 
-If the user want to  change these input information, they can either use the `options` function as following to input updates.
-
-
+To change the input information, one may use the `options` function as below to input different values temporarily or hand-edit the `.Rprofile` file.
 
 ```{r eval = FALSE}
 options("pew_name" = "Juanita Herrera",
@@ -28,16 +26,14 @@ options("pew_name" = "Juanita Herrera",
         "pew_email" = "jherrera@uppermidwest.edu")
 ```
 
-Or they can set the argument `reset` to `TRUE` when running `pew_download` again.
-The function will request information inputs again.
+Alternately, one may set the argument `reset` to `TRUE` when running `pew_download` again, and the function will request (and store) the new information.
 
-
-The `pew_download` function will then have access the information it needs to pass on to Pew by default.  This means that researchers will not have to expose their info in their R scripts and that others reproducing their results later will be able to execute those R scripts without modification.  (They will, however, need to enter their own information into their own .Rprofiles, a detail that should be noted in the reproducibility materials to avoid confusion.)
+The `pew_download` function will then have access to the information it needs to pass on to Pew by default.  This means that researchers will not have to expose their info in their R scripts and that others reproducing their results later will be able to execute those R scripts without modification.  (Other researchers will, however, need to enter their own information into their own .Rprofiles, either by hand or via the `pew_download` command, a detail that should be noted in the reproducibility materials to avoid confusion.)
 
 
 ## Use
 
-The `pew_download` function (1) submit the required informaiton to the Pew's downloading website, (2) enters the required contact information and agrees to the terms and conditions of the download, (3) downloads the dataset's files, and, optionally but by default, (4) decompresses the dataset's files to a subdirectory within a specified directory (or, by default, a `pew_data` directory in the current working directory).
+The `pew_download` function (1) simulates a visit to the website of the specified Pew dataset, (2) enters the required contact information and agrees to the terms and conditions of the download, (3) downloads the dataset's files, and, optionally but by default, (4) decompresses the dataset's files to a subdirectory within a specified directory (or, by default, a `pew_data` directory in the current working directory).
 
 Datasets are specified using the `file_id` and `area` arguments.  The `area` argument indicates which of the seven Pew research areas produced the dataset:
 

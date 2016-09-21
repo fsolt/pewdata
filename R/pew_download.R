@@ -76,25 +76,25 @@ pew_download <- function(area = "politics",
   }
   
   if (is.null(name)){
-    pew_name <- readline(prompt = "Please enter the name to register the download: \n")
+    pew_name <- readline(prompt = "The Pew Data Center requires some user information.  Please enter your name to submit to Pew: \n")
     options("pew_name" = pew_name)
     name <- getOption("pew_name")
   }
   
   if (is.null(org)){
-    pew_org <- readline(prompt = "Please enter the organization to register the download: \n")
+    pew_org <- readline(prompt = "Please enter your organization to submit to Pew: \n")
     options("pew_org" = pew_org)
     org <- getOption("pew_org")
   }
   
   if (is.null(phone)){
-    pew_phone = readline(prompt = "Please enter the phone to register the download: \n")
+    pew_phone = readline(prompt = "Please enter the phone number to submit to Pew: \n")
     options("pew_phone" = pew_phone)
     phone <-  getOption("pew_phone")
   }
   
   if (is.null(email)){
-    pew_email <- readline(prompt = "Please enter the email to register the download: \n")
+    pew_email <- readline(prompt = "Please enter the email to submit to Pew: \n")
     options("pew_email" = pew_email)
     email <- getOption("pew_email")
   }

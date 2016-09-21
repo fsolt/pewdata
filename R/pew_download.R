@@ -76,7 +76,7 @@ pew_download <- function(area = "politics",
   }
   
   if (is.null(name)){
-    pew_name <- readline(prompt = "The Pew Data Center requires some user information.  Please enter your name to submit to Pew: \n")
+    pew_name <- readline(prompt = "The Pew Data Center requires some user information.  Please enter your name: \n")
     options("pew_name" = pew_name)
     name <- getOption("pew_name")
   }

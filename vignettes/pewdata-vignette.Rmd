@@ -57,14 +57,14 @@ To reproducibly download this dataset:
 pew_download(area = "socialtrends", file_id = 21476)
 ```
 
-For the Pew Forum on Religion & Public Life's dataset Global Restrictions on Religion 2007-2013, the file id is "global-restrictions-on-religion-2007-2013":
+For the Pew Forum on Religion & Public Life's dataset Religion in Latin America, the file id is "religion-in-latin-america":
 
-<img src="global-restrictions.png" style="width: 100%;"/>
+<img src="religion-in-lat-am.png" style="width: 100%;"/>
 
 To download this dataset reproducibly:
 
 ```{r eval=FALSE}
-pew_download(area = "religion", file_id = "global-restrictions-on-religion-2007-2013")
+pew_download(area = "religion", file_id = "religion-in-latin-america")
 ```
 
 Multiple datasets may be downloaded from the same research area in a single command by passing a vector of ids to `file_id`.  The following downloads the Weekly Survey of September 3-7, 2015; the July 2015 Political Survey; and the May 2015 Political Survey from the U.S. Politics & Policy area (which is the default for `area`):

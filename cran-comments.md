@@ -8,7 +8,7 @@
 0 errors | 0 warnings | 1 notes
 
 * checking CRAN incoming feasibility ... NOTE
-Maintainer: ‘Frederick Solt <frederick-solt@uiowa.edu>’
+Maintainer: 'Frederick Solt <frederick-solt@uiowa.edu>'
 
 ### V 0.2.0
 0 errors | 0 warnings | 0 notes

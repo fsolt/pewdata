@@ -14,6 +14,5 @@ To install:
 if (!require(ghit)) install.packages("ghit")
 ghit::install_github("fsolt/pewdata")
 ```
-Note that `pewdata` depends on the Firefox browser; if you don't already have it installed on your machine, [get it here](https://www.mozilla.org/firefox).
 
 For more details, check out [the vignette](https://cran.r-project.org/package=pewdata/vignettes/pewdata-vignette.html).

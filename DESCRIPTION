@@ -11,6 +11,7 @@ Description: Reproducible, programmatic retrieval of survey datasets from the
     Pew Research Center.
 License: MIT + file LICENSE
 LazyData: TRUE
+Encoding: UTF-8
 Suggests:
     knitr,
     rmarkdown

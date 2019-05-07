@@ -24,15 +24,18 @@
 #'  
 #'  \code{journalism} Journalism & Media
 #'  
-#'  \code{internet} Internet, Science & Tech
+#'  \code{socialtrends} Social & Demographic Trends
 #'  
 #'  \code{religion} Religion & Public Life
 #'  
+#'  \code{internet} Internet & Technology
+#'  
+#'  \code{science} Science & Society
+#'     
 #'  \code{hispanic} Hispanic Trends
 #'  
 #'  \code{global} Global Attitudes & Trends
 #'  
-#'  \code{socialtrends} Social & Demographic Trends
 #'
 #'  To avoid requiring others to edit your scripts to insert their own contact 
 #'  information, the default is set to fetch this information from the user's 
@@ -112,11 +115,10 @@ pew_download <- function(area = "politics",
   signin <- switch(area,
                    politics = "https://www.people-press.org/datasets/",
                    journalism = "https://www.journalism.org/datasets/",
-                   internet = "https://www.pewinternet.org/datasets/",
                    religion = "https://www.pewforum.org/datasets/",
-                   socialtrends = "https://www.pewsocialtrends.org/datasets/",
+                   science = "https://www.pewresearch.org/science/datasets/",
                    # default
-                   paste0("http://www.pew", area, ".org/category/datasets/")
+                   paste0("http://www.pew", area, ".org/datasets/")
   )
   
   # sign in
@@ -139,9 +141,8 @@ pew_download <- function(area = "politics",
     url <- switch(area,
                   politics = paste0("https://www.people-press.org/dataset/", item),
                   journalism = paste0("https://www.journalism.org/dataset/", item),
-                  internet = paste0("https://www.pewinternet.org/dataset/", item),
                   religion = paste0("https://www.pewforum.org/dataset/", item),
-                  socialtrends = paste0("https://www.pewsocialtrends.org/dataset/", item),
+                  science = paste0("https://www.pewresearch.org/science/dataset/", item),
                   # default
                   paste0("http://www.pew", area, ".org/dataset/", item)
     )

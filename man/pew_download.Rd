@@ -46,15 +46,18 @@ The Pew Research Center has seven areas of research focus.  Pass one of the
  
  \code{journalism} Journalism & Media
  
- \code{internet} Internet, Science & Tech
+ \code{socialtrends} Social & Demographic Trends
  
  \code{religion} Religion & Public Life
  
+ \code{internet} Internet & Technology
+ 
+ \code{science} Science & Society
+    
  \code{hispanic} Hispanic Trends
  
  \code{global} Global Attitudes & Trends
  
- \code{socialtrends} Social & Demographic Trends
 
  To avoid requiring others to edit your scripts to insert their own contact 
  information, the default is set to fetch this information from the user's 

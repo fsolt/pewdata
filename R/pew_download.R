@@ -6,14 +6,15 @@
 #'  (see details).
 #' @param file_id The unique identifier (or optionally a vector of these identifiers)
 #'  for the dataset(s) to be downloaded (see details).
-#' @param name,org,phone,email Contact information to submit to Pew Research Center
-#'  (see details).
+#' @param email,password Account information to submit to Pew Research Center (see details).
 #' @param reset If TRUE, the register information will be reset. The default is FALSE.
 #' @param download_dir The directory (relative to your working directory) to
 #'   which files from the Pew Research Center will be downloaded.
 #' @param msg If TRUE, outputs a message showing which data set is being downloaded.
-#' @param unzip If TRUE, the downloaded zip files will be unzipped.
-#' @param delete_zip If TRUE, the downloaded zip files will be deleted.
+#' @param convert If TRUE, converts downloaded file(s) to .RData format.
+#' @param delay If the speed of your connection to the Pew Data Center is particularly slow, 
+#'   \code{pew_download} may encounter problems.  Increasing the \code{delay} parameter
+#'   may help.
 #'
 #' @details The Pew Research Center has seven areas of research focus.  Pass one of the 
 #'  following strings to the \code{area} argument to specify which area generated
@@ -39,105 +40,157 @@
 #'  add these options to your .Rprofile substituting your info for the example below:
 #'
 #'  \code{
-#'   options("pew_name" = "Juanita Herrera",
-#'          "pew_org" = "Upper Midwest University",
-#'          "pew_phone" = "888-000-0000",
-#'          "pew_email" = "jherrera@uppermidwest.edu")
+#'   options("pew_email" = "jherrera@uppermidwest.edu"
+#'          "pew_password" = "my_password")
 #'  }
 #'
-#' @return The function returns downloaded files.
+#' @return The function returns nothing; it has the side effect of downloading files.
 #'
 #' @examples
 #' \dontrun{
 #'  pew_download(file_id = c(20059299, 20058139))
 #' }
 #'
-#' @importFrom rvest html_session html_form set_values submit_form
+#' @import RSelenium
+#' @importFrom stringr str_detect str_subset
 #' @importFrom magrittr "%>%"
 #' @importFrom purrr walk
+#' @importFrom rio convert export
+#' @importFrom foreign read.spss
+#' @importFrom tools file_path_sans_ext
+#' @importFrom utils unzip
 #' 
 #' @export
 
 pew_download <- function(area = "politics",
                          file_id, 
-                         name = getOption("pew_name"),
-                         org = getOption("pew_org"),
-                         phone = getOption("pew_phone"),
                          email = getOption("pew_email"),
+                         password = getOption("pew_password"),
                          reset = FALSE,
                          download_dir = "pew_data",
                          msg = TRUE,
                          unzip = TRUE,
                          delete_zip = TRUE) {
   
-  # Detect the login info
-  if (reset){
-    name <- org <- phone <- email <- NULL
+  # detect login info
+  if (reset) {
+    email <- password <- NULL
   }
   
-  if (is.null(name)){
-    pew_name <- readline(prompt = "The Pew Data Center requires some user information.  Please enter your name: \n")
-    options("pew_name" = pew_name)
-    name <- getOption("pew_name")
-  }
-  
-  if (is.null(org)){
-    pew_org <- readline(prompt = "Please enter your organization to submit to Pew: \n")
-    options("pew_org" = pew_org)
-    org <- getOption("pew_org")
-  }
-  
-  if (is.null(phone)){
-    pew_phone = readline(prompt = "Please enter the phone number to submit to Pew: \n")
-    options("pew_phone" = pew_phone)
-    phone <-  getOption("pew_phone")
-  }
-  
-  if (is.null(email)){
-    pew_email <- readline(prompt = "Please enter the email to submit to Pew: \n")
+  if (is.null(email)) {
+    pew_email <- readline(prompt = "The Pew Data Center requires your user account information.  Please enter your email address: \n")
     options("pew_email" = pew_email)
     email <- getOption("pew_email")
   }
-
-  # Get list of current download directory contents
+  
+  if (is.null(password)) {
+    pew_password <- readline(prompt = "Please enter your Pew password: \n")
+    options("pew_password" = pew_password)
+    password <- getOption("pew_password")
+  }
+  
+  # build path to chrome's default download directory
+  if (Sys.info()[["sysname"]]=="Linux") {
+    default_dir <- file.path("home", Sys.info()[["user"]], "Downloads")
+  } else {
+    default_dir <- file.path("", "Users", Sys.info()[["user"]], "Downloads")
+  }
+  
+  # create specified download directory if necessary
+  if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
+  
+  
+  # get list of current download directory contents
   if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
   dd_old <- list.files(download_dir)
   
-  # Loop through files
-  file_id %>% walk(function(item) {
+  # initialize driver
+  if(msg) message("Initializing RSelenium driver")
+  rD <- rsDriver(browser = "chrome", verbose = TRUE)
+  remDr <- rD[["client"]]
+  
+  # get signin url
+  signin <- switch(area,
+                   politics = "https://www.people-press.org/category/datasets/",
+                   journalism = "https://www.journalism.org/datasets/",
+                   internet = "https://www.pewinternet.org/datasets/",
+                   religion = "https://www.pewforum.org/datasets/",
+                   # default
+                   paste0("http://www.pew", area, ".org/category/datasets/")
+  )
+  
+  # sign in
+  remDr$navigate(signin)
+  Sys.sleep(delay)
+  remDr$findElement(using = "name", "username")$sendKeysToElement(list(email))
+  remDr$findElement(using = "name", "password")$sendKeysToElement(list(password))
+  remDr$findElement(using = "css selector", ".button")$clickElement()
+  Sys.sleep(delay)
+  
+  # loop through files
+  walk(file_id, function(item) {
     # show process
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
-    # build url
+    # get list of current default download directory contents
+    dd_old <- list.files(default_dir)
+    
+    # navigate to download page  
     url <- switch(area,
-                  politics = paste0("http://www.people-press.org/category/datasets/?download=", item),
-                  journalism = paste0("http://www.journalism.org/datasets/", item),
-                  internet = paste0("http://www.pewinternet.org/datasets/", item),
-                  religion = paste0("http://www.pewforum.org/datasets/", item),
+                  politics = paste0("https://www.people-press.org/category/datasets/?download=", item),
+                  journalism = paste0("https://www.journalism.org/datasets/", item),
+                  internet = paste0("https://www.pewinternet.org/datasets/", item),
+                  religion = paste0("https://www.pewforum.org/datasets/", item),
                   # default
                   paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
-                  )
+    )
+    remDr$navigate(url)
+    Sys.sleep(delay)
+    remDr$findElement(using = "css selector", ".button")$clickElement()
     
-    s <- html_session(url)
-    form <- html_form(s)[[1]] %>% 
-      set_values(Name = name,
-                 Organization= org,
-                 Phone = phone,
-                 Email = email) 
-
-    suppressMessages(output <- submit_form(s, form))
-    file_name <- strsplit(output$response$url, "[/]") %>% 
-      unlist() 
-    file_name <- file_name[length(file_name)]  # extract the zip file name 
-    file_dir <- paste0(file.path(download_dir, file_name))
-    writeBin(httr::content(output$response, "raw"), file_dir)
+    # check that download has completed
+    dd_new <- list.files(default_dir)[!list.files(default_dir) %in% dd_old]
+    wait <- TRUE
+    tryCatch(
+      while(all.equal(stringr::str_detect(dd_new, "\\.part$"), logical(0))) {
+        Sys.sleep(1)
+        dd_new <- list.files(default_dir)[!list.files(default_dir) %in% dd_old]
+      }, error = function(e) 1 )
+    while(any(stringr::str_detect(dd_new, "\\.crdownload$"))) {
+      Sys.sleep(1)
+      dd_new <- list.files(default_dir)[!list.files(default_dir) %in% dd_old]
+    }
     
-    if (unzip == TRUE) unzip(file_dir, exdir = paste0(download_dir, "/", gsub(".zip", "", file_name)))
-
-    if (delete_zip == TRUE) invisible(file.remove(file_dir))
-  
+    # unzip into specified directory and convert to .RData
+    dld_old <- list.files(download_dir)
+    unzip(file.path(default_dir, dd_new), exdir = download_dir)
+    unlink(file.path(default_dir, dd_new))
+    dld_new <- list.files(download_dir)[!list.files(download_dir) %in% dld_old]
+    file.rename(file.path(download_dir, dld_new), file.path(download_dir, item))
+    
+    data_files <- list.files(path = file.path(download_dir, item), recursive = TRUE) %>%
+      str_subset("\\.sav")
+    if (convert == TRUE) {
+      for (i in seq_along(data_files)) {
+        data_file <- data_files[i]
+        tryCatch(rio::convert(file.path(download_dir, item, data_file),
+                              paste0(tools::file_path_sans_ext(file.path(download_dir,
+                                                                         item,
+                                                                         basename(data_file))), ".RData")),
+                 error = function(c) suppressWarnings(
+                   foreign::read.spss(file.path(download_dir, item, data_file),
+                                      to.data.frame = TRUE,
+                                      use.value.labels = FALSE) %>%
+                     rio::export(paste0(tools::file_path_sans_ext(file.path(download_dir,
+                                                                            item,
+                                                                            basename(data_file))), ".RData"))
+                 )
+        )
+      }
+    }
   })
-}
   
-  
-  
+  # Close driver
+  remDr$close()
+  rD[["server"]]$stop()
+} 

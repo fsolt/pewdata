@@ -4,11 +4,10 @@
 \alias{pew_download}
 \title{Download datasets from the Pew Research Center}
 \usage{
-pew_download(area = "politics", file_id, name = getOption("pew_name"),
-  org = getOption("pew_org"), phone = getOption("pew_phone"),
-  email = getOption("pew_email"), reset = FALSE,
-  download_dir = "pew_data", msg = TRUE, unzip = TRUE,
-  delete_zip = TRUE)
+pew_download(area = "politics", file_id,
+  email = getOption("pew_email"), password = getOption("pew_password"),
+  reset = FALSE, download_dir = "pew_data", msg = TRUE,
+  unzip = TRUE, delete_zip = TRUE)
 }
 \arguments{
 \item{area}{One of the seven research areas of the Pew Research Center 
@@ -17,8 +16,7 @@ pew_download(area = "politics", file_id, name = getOption("pew_name"),
 \item{file_id}{The unique identifier (or optionally a vector of these identifiers)
 for the dataset(s) to be downloaded (see details).}
 
-\item{name, org, phone, email}{Contact information to submit to Pew Research Center
-(see details).}
+\item{email, password}{Account information to submit to Pew Research Center (see details).}
 
 \item{reset}{If TRUE, the register information will be reset. The default is FALSE.}
 
@@ -27,12 +25,14 @@ which files from the Pew Research Center will be downloaded.}
 
 \item{msg}{If TRUE, outputs a message showing which data set is being downloaded.}
 
-\item{unzip}{If TRUE, the downloaded zip files will be unzipped.}
+\item{convert}{If TRUE, converts downloaded file(s) to .RData format.}
 
-\item{delete_zip}{If TRUE, the downloaded zip files will be deleted.}
+\item{delay}{If the speed of your connection to the Pew Data Center is particularly slow, 
+\code{pew_download} may encounter problems.  Increasing the \code{delay} parameter
+may help.}
 }
 \value{
-The function returns downloaded files.
+The function returns nothing; it has the side effect of downloading files.
 }
 \description{
 \code{pew_download} provides a programmatic and reproducible means to download survey datasets from the Pew Research Center
@@ -62,10 +62,8 @@ The Pew Research Center has seven areas of research focus.  Pass one of the
  add these options to your .Rprofile substituting your info for the example below:
 
  \code{
-  options("pew_name" = "Juanita Herrera",
-         "pew_org" = "Upper Midwest University",
-         "pew_phone" = "888-000-0000",
-         "pew_email" = "jherrera@uppermidwest.edu")
+  options("pew_email" = "jherrera@uppermidwest.edu"
+         "pew_password" = "my_password")
  }
 }
 \examples{
@@ -74,4 +72,3 @@ The Pew Research Center has seven areas of research focus.  Pass one of the
 }
 
 }
-

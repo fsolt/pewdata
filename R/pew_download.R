@@ -69,8 +69,8 @@ pew_download <- function(area = "politics",
                          reset = FALSE,
                          download_dir = "pew_data",
                          msg = TRUE,
-                         unzip = TRUE,
-                         delete_zip = TRUE) {
+                         convert = TRUE,
+                         delay = 5) {
   
   # detect login info
   if (reset) {

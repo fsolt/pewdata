@@ -22,10 +22,8 @@ To change this contact information within a session, one may set the argument `r
 An optional, but highly recommended, setup step is to add the contact information Pew requires to your [.Rprofile](http://www.statmethods.net/interface/customizing.html) as in the following example:
 
 ```{r eval = FALSE}
-options("pew_name" = "Juanita Herrera",
-        "pew_org" = "Upper Midwest University",
-        "pew_phone" = "888-000-0000",
-        "pew_email" = "jherrera@uppermidwest.edu")
+options("pew_email" = "jherrera@uppermidwest.edu",
+        "pew_password" = "my_password")
 ```
 
 The `pew_download` function will then have access the information it needs to pass on to Pew by default.  This means that researchers will not have to expose their info in their R scripts and that others reproducing their results later will be able to execute those R scripts without modification.  (They will, however, need to enter their own information into their own .Rprofiles, a detail that should be noted in the reproducibility materials to avoid confusion.)
@@ -33,7 +31,7 @@ The `pew_download` function will then have access the information it needs to pa
 
 ## Use
 
-The `pew_download` function (1) simulates a visit to the website of the specified Pew dataset, (2) enters the required contact information and agrees to the terms and conditions of the download, (3) downloads the dataset's files, and, optionally but by default, (4) decompresses the dataset's files to a subdirectory within a specified directory (or, by default, a `pew_data` directory in the current working directory).
+The `pew_download` function (1) opens a Chrome browser and navigates to the website of the specified Pew Research Center research area, (2) enters the required information to log in, (3) navigates to a specified dataset, (4) downloads the dataset's files, and, optionally but by default, (5) decompresses the dataset's files to a subdirectory within a specified directory (or, by default, a `pew_data` directory in the current working directory).
 
 Datasets are specified using the `file_id` and `area` arguments.  The `area` argument indicates which of the seven Pew research areas produced the dataset:
 

@@ -110,10 +110,11 @@ pew_download <- function(area = "politics",
   
   # get signin url
   signin <- switch(area,
-                   politics = "https://www.people-press.org/category/datasets/",
+                   politics = "https://www.people-press.org/datasets/",
                    journalism = "https://www.journalism.org/datasets/",
                    internet = "https://www.pewinternet.org/datasets/",
                    religion = "https://www.pewforum.org/datasets/",
+                   socialtrends = "https://www.pewsocialtrends.org/datasets/",
                    # default
                    paste0("http://www.pew", area, ".org/category/datasets/")
   )
@@ -136,16 +137,21 @@ pew_download <- function(area = "politics",
     
     # navigate to download page  
     url <- switch(area,
-                  politics = paste0("https://www.people-press.org/category/datasets/?download=", item),
-                  journalism = paste0("https://www.journalism.org/datasets/", item),
-                  internet = paste0("https://www.pewinternet.org/datasets/", item),
-                  religion = paste0("https://www.pewforum.org/datasets/", item),
+                  politics = paste0("https://www.people-press.org/dataset/", item),
+                  journalism = paste0("https://www.journalism.org/dataset/", item),
+                  internet = paste0("https://www.pewinternet.org/dataset/", item),
+                  religion = paste0("https://www.pewforum.org/dataset/", item),
+                  socialtrends = paste0("https://www.pewsocialtrends.org/dataset/", item),
                   # default
-                  paste0("http://www.pew", area, ".org/category/datasets/?download=", item)
+                  paste0("http://www.pew", area, ".org/dataset/", item)
     )
     remDr$navigate(url)
     Sys.sleep(delay)
     remDr$findElement(using = "css selector", ".button")$clickElement()
+    
+    # agree to terms
+    try({remDr$findElement(using = "class name", "checkbox")$clickElement()
+      remDr$findElement(using = "class name", "green")$clickElement()})
     
     # check that download has completed
     dd_new <- list.files(default_dir)[!list.files(default_dir) %in% dd_old]

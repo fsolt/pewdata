@@ -70,7 +70,7 @@ pew_download <- function(area = "politics",
                          download_dir = "pew_data",
                          msg = TRUE,
                          convert = TRUE,
-                         delay = 5) {
+                         delay = 2) {
   
   # detect login info
   if (reset) {
@@ -97,8 +97,7 @@ pew_download <- function(area = "politics",
   }
   
   # create specified download directory if necessary
-  if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
-  
+  if (!dir.exists(file.path(download_dir, file_id))) dir.create(file.path(download_dir, file_id), recursive = TRUE)
   
   # get list of current download directory contents
   if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
@@ -106,7 +105,7 @@ pew_download <- function(area = "politics",
   
   # initialize driver
   if(msg) message("Initializing RSelenium driver")
-  rD <- rsDriver(browser = "chrome", verbose = TRUE)
+  rD <- RSelenium::rsDriver(browser = "chrome", verbose = TRUE)
   remDr <- rD[["client"]]
   
   # get signin url
@@ -162,14 +161,11 @@ pew_download <- function(area = "politics",
     }
     
     # unzip into specified directory and convert to .RData
-    dld_old <- list.files(download_dir)
-    unzip(file.path(default_dir, dd_new), exdir = download_dir)
+    unzip(file.path(default_dir, dd_new), exdir = file.path(download_dir, item))
     unlink(file.path(default_dir, dd_new))
-    dld_new <- list.files(download_dir)[!list.files(download_dir) %in% dld_old]
-    file.rename(file.path(download_dir, dld_new), file.path(download_dir, item))
-    
+
     data_files <- list.files(path = file.path(download_dir, item), recursive = TRUE) %>%
-      str_subset("\\.sav")
+      stringr::str_subset("\\.sav")
     if (convert == TRUE) {
       for (i in seq_along(data_files)) {
         data_file <- data_files[i]
@@ -186,6 +182,12 @@ pew_download <- function(area = "politics",
                                                                             basename(data_file))), ".RData"))
                  )
         )
+        if (file.size(file.path(download_dir, item, data_file)) == max(file.size(file.path(download_dir, item, data_files)))) {
+          file.rename(paste0(tools::file_path_sans_ext(file.path(download_dir,
+                                                                 item,
+                                                                 basename(data_file))), ".RData"),
+                      paste0(file.path(download_dir, item, item), ".RData"))
+        }
       }
     }
   })

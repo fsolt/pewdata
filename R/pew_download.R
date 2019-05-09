@@ -47,11 +47,11 @@
 #'          "pew_password" = "password123!")
 #'  }
 #'
-#' @return The function returns nothing; it has the side effect of downloading files.
+#' @return The function downloads files.
 #'
 #' @examples
 #' \dontrun{
-#'  pew_download(file_id = c(20059299, 20058139))
+#'  pew_download(file_id = c("september-2018-political-survey", "june-2018-political-survey"))
 #' }
 #'
 #' @import RSelenium

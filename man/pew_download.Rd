@@ -32,7 +32,7 @@ which files from the Pew Research Center will be downloaded.}
 may help.}
 }
 \value{
-The function returns nothing; it has the side effect of downloading files.
+The function downloads files.
 }
 \description{
 \code{pew_download} provides a programmatic and reproducible means to download survey datasets from the Pew Research Center
@@ -71,7 +71,7 @@ The Pew Research Center has seven areas of research focus.  Pass one of the
 }
 \examples{
 \dontrun{
- pew_download(file_id = c(20059299, 20058139))
+ pew_download(file_id = c("september-2018-political-survey", "june-2018-political-survey"))
 }
 
 }

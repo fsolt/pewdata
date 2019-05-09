@@ -66,7 +66,7 @@ The Pew Research Center has seven areas of research focus.  Pass one of the
 
  \code{
   options("pew_email" = "jherrera@uppermidwest.edu"
-         "pew_password" = "my_password")
+         "pew_password" = "password123!")
  }
 }
 \examples{

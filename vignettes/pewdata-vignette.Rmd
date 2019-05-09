@@ -10,11 +10,11 @@ vignette: >
 ---
 
 
-The [Pew Research Center](http://www.pewresearch.org), in its [own words](http://www.pewresearch.org/about/), "is a nonpartisan fact tank that informs the public about the issues, attitudes[,] and trends shaping America and the world."  As a result, Pew is an invaluable source of survey data on a wide range of topics; the surveys it conducts are available on its website, generally after an embargo of about six months.  Researchers taking advantage of these datasets, however, are caught in a bind.  The terms and conditions for downloading any Pew dataset state that one "may not reproduce, sell, rent, lease, loan, distribute or sublicense or otherwise transfer any Data, in whole or in part, to any other party."[^1] But to ensure that one's work can be reproduced, assessed, and built upon by others, one must provide access to the raw data one employed.  The `pewdata` package cuts this knot by providing programmatic, reproducible access to Pew's datasets from within R. 
+The [Pew Research Center](http://www.pewresearch.org), in its [own words](http://www.pewresearch.org/about/), "is a nonpartisan fact tank that informs the public about the issues, attitudes[,] and trends shaping America and the world."  As a result, Pew is an invaluable source of survey data on a wide range of topics; the surveys it conducts are available on its website, generally after an embargo of about six months.  Researchers taking advantage of these datasets, however, are caught in a bind.  The terms and conditions for downloading any Pew dataset state that one "may not reproduce, sell, rent, lease, loan, distribute or sublicense or otherwise transfer any Data, in whole or in part, to any other party."^[The terms _do_ include an exception that one "may incorporate limited portions of the Data in scholarly, research or academic publications or for the purposes of news reporting" with attribution, but this would appear inadequate for the purposes of reproducibility.] But to ensure that one's work can be reproduced, assessed, and built upon by others, one must provide access to the raw data one employed.  The `pewdata` package cuts this knot by providing programmatic, reproducible access to Pew's datasets from within R. 
 
 ## Setup
 
-When used interactively, the `pew_download` function will be ask for the contact information requested by Pew of those wishing to download its datasets: name, organization, phone, and email. 
+When used interactively, the `pew_download` function will ask for the login information required by the Roper Center: the registered user’s email and password. 
 After that information is input once, it will be entered automatically for any other download requests made in the same session.
 
 To change this contact information within a session, one may set the argument `reset` to `TRUE` when running `pew_download` again, and the function will again request the required information. 
@@ -23,7 +23,7 @@ An optional, but highly recommended, setup step is to add the contact informatio
 
 ```{r eval = FALSE}
 options("pew_email" = "jherrera@uppermidwest.edu",
-        "pew_password" = "my_password")
+        "pew_password" = "password123!")
 ```
 
 The `pew_download` function will then have access the information it needs to pass on to Pew by default.  This means that researchers will not have to expose their info in their R scripts and that others reproducing their results later will be able to execute those R scripts without modification.  (They will, however, need to enter their own information into their own .Rprofiles, a detail that should be noted in the reproducibility materials to avoid confusion.)
@@ -45,14 +45,14 @@ Datasets are specified using the `file_id` and `area` arguments.  The `area` arg
 |`"global"` | Global Attitudes & Trends
 |`"socialtrends"` | Social & Demographic Trends
 
-The `file_id` argument specifies particular datasets within the `area`.  Unfortunately, Pew does not identify datasets in a uniform manner across all of its research areas (`"journalism"`, `"internet"`, and `"religion"` use strings; the rest use numeric ids), and the only way to get the id for a dataset is to copy it from the end of the dataset's url.  For the November 2014 Gender and Leadership survey conducted by Pew Social & Democraphic Trends, for example, the file id is 21476:
+The `file_id` argument specifies particular datasets within the `area`.  Pew does identifies datasets as strings across all of its research areas, but the only way to get the id for a dataset is to copy it from the end of the dataset's url.  For the November 2014 Gender and Leadership survey conducted by Pew Social & Democraphic Trends, for example, the file id is "gender-leadership":
 
 <img src="gender-leadership.png" style="width: 100%;"/>
 
 To reproducibly download this dataset:
 
 ```{r eval=FALSE}
-pew_download(area = "socialtrends", file_id = 21476)
+pew_download(area = "socialtrends", file_id = "gender-leadership")
 ```
 
 For the Pew Forum on Religion & Public Life's dataset Religion in Latin America, the file id is "religion-in-latin-america":
@@ -65,12 +65,10 @@ To download this dataset reproducibly:
 pew_download(area = "religion", file_id = "religion-in-latin-america")
 ```
 
-Multiple datasets may be downloaded from the same research area in a single command by passing a vector of ids to `file_id`.  The following downloads the Weekly Survey of September 3-7, 2015; the July 2015 Political Survey; and the May 2015 Political Survey from the U.S. Politics & Policy area (which is the default for `area`):
+Multiple datasets may be downloaded from the same research area in a single command by passing a vector of ids to `file_id`.  The following downloads the September 2018 Political Survey; the July 11-15, 2018 Weekly Survey; and the June 2018 Political Survey from the U.S. Politics & Policy area (which is the default for `area`):
 
 ```{r eval=FALSE}
-pew_download(file_id = c(20059613, 20059299, 20058139))
+pew_download(file_id = c("september-2018-political-survey", "july-11-15-2018-weekly-survey", "june-2018-political-survey"))
 ```
 
-After the needed datasets are downloaded, they are, by default, unzipped and ready to be loaded into R using, e.g., `haven::read_sav` or `rio::import`.
-
-[^1]: The terms _do_ include an exception that one "may incorporate limited portions of the Data in scholarly, research or academic publications or for the purposes of news reporting" with attribution, but this would appear inadequate for the purposes of reproducibility.
+After the needed datasets are downloaded, they are, by default, unzipped, and the data file is converted to .Rdata format and renamed with the file id.^[In the event that the download contains more than one data file, all are converted to .Rdata format, but only the largest of the original files is renamed.]  The original files are left unchanged.

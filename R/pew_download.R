@@ -44,7 +44,7 @@
 #'
 #'  \code{
 #'   options("pew_email" = "jherrera@uppermidwest.edu"
-#'          "pew_password" = "my_password")
+#'          "pew_password" = "password123!")
 #'  }
 #'
 #' @return The function returns nothing; it has the side effect of downloading files.
@@ -108,7 +108,7 @@ pew_download <- function(area = "politics",
   
   # initialize driver
   if(msg) message("Initializing RSelenium driver")
-  rD <- RSelenium::rsDriver(browser = "chrome", verbose = TRUE)
+  rD <- RSelenium::rsDriver(browser = "chrome")
   remDr <- rD[["client"]]
   
   # get signin url

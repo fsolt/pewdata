@@ -1,12 +1,14 @@
 Package: pewdata
 Type: Package
 Title: Reproducible Retrieval of Pew Research Center Datasets
-Version: 0.2.9999
+Version: 0.3.0
 Date: 2019-04-06
 Authors@R: c(
     person("Frederick", "Solt", email = "frederick-solt@uiowa.edu", role = c("aut", "cre")),
-    person("Yue", "Hu", email = "yue-hu-1@uiowa.edu", role = c("aut")),
+    person("Yue", "Hu", email = "yuehu@tsinghua.edu.cn", role = c("aut")),
     person("Eric", "Persson", email = "expersso5@gmail.com", role = c("ctb")))
+URL: https://github.com/fsolt/pewdata
+BugReports: https://github.com/fsolt/pewdata/issues
 Description: Reproducible, programmatic retrieval of survey datasets from the
     Pew Research Center.
 License: MIT + file LICENSE

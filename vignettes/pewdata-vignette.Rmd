@@ -45,7 +45,7 @@ Datasets are specified using the `file_id` and `area` arguments.  The `area` arg
 |`"global"` | Global Attitudes & Trends
 |`"socialtrends"` | Social & Demographic Trends
 
-The `file_id` argument specifies particular datasets within the `area`.  Pew does identifies datasets as strings across all of its research areas, but the only way to get the id for a dataset is to copy it from the end of the dataset's url.  For the November 2014 Gender and Leadership survey conducted by Pew Social & Democraphic Trends, for example, the file id is "gender-leadership":
+The `file_id` argument specifies particular datasets within the `area`.  Pew does identifies datasets as strings across all of its research areas, but the only way to get the id for a dataset is to copy it from the end of the dataset's url.  For the November 2014 Gender and Leadership survey conducted by Pew Social & Demographic Trends, for example, the file id is "gender-leadership":
 
 <img src="gender-leadership.png" style="width: 100%;"/>
 
@@ -71,4 +71,4 @@ Multiple datasets may be downloaded from the same research area in a single comm
 pew_download(file_id = c("september-2018-political-survey", "july-11-15-2018-weekly-survey", "june-2018-political-survey"))
 ```
 
-After the needed datasets are downloaded, they are, by default, unzipped, and the data file is converted to .Rdata format and renamed with the file id.^[In the event that the download contains more than one data file, all are converted to .Rdata format, but only the largest of the original files is renamed.]  The original files are left unchanged.
+After the needed datasets are downloaded, they are, by default, unzipped, and the data file is converted to .RData format and renamed with the file id.^[In the event that the download contains more than one data file, all are converted to .RData format, but only the largest of the original files is renamed.]  The original files are left unmodified.

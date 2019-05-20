@@ -102,10 +102,6 @@ pew_download <- function(area = "politics",
   # create specified download directory if necessary
   if (!dir.exists(file.path(download_dir, file_id))) dir.create(file.path(download_dir, file_id), recursive = TRUE)
   
-  # get list of current download directory contents
-  if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
-  dd_old <- list.files(download_dir)
-  
   # initialize driver
   if(msg) message("Initializing RSelenium driver")
   rD <- RSelenium::rsDriver(browser = "chrome")

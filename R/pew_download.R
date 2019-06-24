@@ -99,9 +99,6 @@ pew_download <- function(area = "politics",
     default_dir <- file.path("", "Users", Sys.info()[["user"]], "Downloads")
   }
   
-  # create specified download directory if necessary
-  if (!dir.exists(file.path(download_dir, file_id))) dir.create(file.path(download_dir, file_id), recursive = TRUE)
-  
   # initialize driver
   if(msg) message("Initializing RSelenium driver")
   rD <- RSelenium::rsDriver(browser = "chrome")
@@ -130,6 +127,9 @@ pew_download <- function(area = "politics",
     # show process
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
+    # create specified download directory if necessary
+    if (!dir.exists(file.path(download_dir, item))) dir.create(file.path(download_dir, item), recursive = TRUE)
+  
     # get list of current default download directory contents
     dd_old <- list.files(default_dir)
     

@@ -1,3 +1,6 @@
+## Version 0.3.1
+1. Updated to accommodate revisions to upstream dependencies.
+
 ## Version 0.3.0
 1. Works with the revised Pew Research Center website, which necessitated a switch back to `RSelenium` from `rvest`.  
 1. By default, automatically converts downloaded datafiles to .RData format.

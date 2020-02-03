@@ -17,4 +17,6 @@ remotes::install_github("fsolt/pewdata")
 
 Note that `pewdata` depends on the Chrome Dev browser; if you don't already have it installed on your machine, [get it here](https://www.google.com/chrome/dev/).
 
+`pewdata` also depends on having a working installation of `rJava`.  Helpful hints [for Mac users](https://zhiyzuo.github.io/installation-rJava/) and [for Windows users](https://cimentadaj.github.io/blog/2018-05-25-installing-rjava-on-windows-10/installing-rjava-on-windows-10/).
+
 For more details, check out [the vignette](https://cran.r-project.org/package=pewdata/vignettes/pewdata-vignette.html).

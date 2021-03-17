@@ -120,7 +120,7 @@ pew_download <- function(area = "politics",
   remDr$findElement(using = "name", "username")$sendKeysToElement(list(email))
   remDr$findElement(using = "name", "password")$sendKeysToElement(list(password))
   if (area == "global") {
-    remDr$findElement(using = "css selector", "#js-prc-user-accounts .button")$clickElement()
+    remDr$findElement(using = "class", "black")$clickElement()
   } else {
     remDr$findElement(using = "css selector", ".button")$clickElement()
   }
@@ -149,7 +149,7 @@ pew_download <- function(area = "politics",
     remDr$navigate(url)
     Sys.sleep(delay)
     if (area == "global") {
-      remDr$findElement(using = "css selector", "#prc-dataset-widget-3 .button")$clickElement()
+      remDr$findElement(using = "css selector", "#secondary .icon")$clickElement()
     } else {
       remDr$findElement(using = "css selector", ".button")$clickElement()
     }

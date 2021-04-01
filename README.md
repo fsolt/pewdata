@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/58319029/113225210-a9328000-92bf-11eb-8ee9-a965f157e199.png" align="right" alt="" width="120" />
+
 [![CRAN version](https://www.r-pkg.org/badges/version/pewdata)](https://cran.r-project.org/package=pewdata) ![](https://cranlogs.r-pkg.org/badges/grand-total/pewdata) [![Travis-CI Build Status](https://travis-ci.org/fsolt/pewdata.svg?branch=master)](https://travis-ci.org/fsolt/pewdata)
 ------------------------------------------------------------------------
 pewdata

@@ -4,10 +4,17 @@
 \alias{pew_download}
 \title{Download datasets from the Pew Research Center}
 \usage{
-pew_download(area = "politics", file_id,
-  email = getOption("pew_email"), password = getOption("pew_password"),
-  reset = FALSE, download_dir = "pew_data", msg = TRUE,
-  convert = TRUE, delay = 2)
+pew_download(
+  area = "politics",
+  file_id,
+  email = getOption("pew_email"),
+  password = getOption("pew_password"),
+  reset = FALSE,
+  download_dir = "pew_data",
+  msg = TRUE,
+  convert = TRUE,
+  delay = 2
+)
 }
 \arguments{
 \item{area}{One of the seven research areas of the Pew Research Center 

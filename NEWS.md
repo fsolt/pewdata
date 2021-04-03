@@ -1,3 +1,6 @@
+## Version 0.3.2
+1. Updated for changes to Pew websites.
+
 ## Version 0.3.1
 1. Updated to accommodate revisions to upstream dependencies.
 

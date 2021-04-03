@@ -73,7 +73,7 @@ pew_download <- function(area = "politics",
                          download_dir = "pew_data",
                          msg = TRUE,
                          convert = TRUE,
-                         delay = 2) {
+                         delay = 3) {
   
   # detect login info
   if (reset) {
@@ -119,11 +119,7 @@ pew_download <- function(area = "politics",
   Sys.sleep(delay)
   remDr$findElement(using = "name", "username")$sendKeysToElement(list(email))
   remDr$findElement(using = "name", "password")$sendKeysToElement(list(password))
-  if (area == "global") {
-    remDr$findElement(using = "class", "black")$clickElement()
-  } else {
-    remDr$findElement(using = "css selector", ".button")$clickElement()
-  }
+  remDr$findElement(using = "class", "black")$clickElement()
   Sys.sleep(delay)
   
   # loop through files
@@ -148,11 +144,7 @@ pew_download <- function(area = "politics",
     )
     remDr$navigate(url)
     Sys.sleep(delay)
-    if (area == "global") {
-      remDr$findElement(using = "css selector", "#secondary .icon")$clickElement()
-    } else {
-      remDr$findElement(using = "css selector", ".button")$clickElement()
-    }
+    remDr$findElement(using = "css selector", "#secondary .icon")$clickElement()
     
     # agree to terms
     try({remDr$findElement(using = "class name", "checkbox")$clickElement()

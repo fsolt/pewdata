@@ -13,7 +13,7 @@ pew_download(
   download_dir = "pew_data",
   msg = TRUE,
   convert = TRUE,
-  delay = 2
+  delay = 3
 )
 }
 \arguments{

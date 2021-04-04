@@ -2,7 +2,7 @@ Package: pewdata
 Type: Package
 Title: Reproducible Retrieval of Pew Research Center Datasets
 Version: 0.3.2
-Date: 2021-03-17
+Date: 2021-04-03
 Authors@R: c(
     person("Frederick", "Solt", email = "frederick-solt@uiowa.edu", role = c("aut", "cre")),
     person("Yue", "Hu", email = "yuehu@tsinghua.edu.cn", role = c("aut")),

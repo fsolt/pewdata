@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-The [Pew Research Center](http://www.pewresearch.org), in its [own words](http://www.pewresearch.org/about/), "is a nonpartisan fact tank that informs the public about the issues, attitudes[,] and trends shaping America and the world."  As a result, Pew is an invaluable source of survey data on a wide range of topics; the surveys it conducts are available on its website, generally after an embargo of about six months.  Researchers taking advantage of these datasets, however, are caught in a bind.  The terms and conditions for downloading any Pew dataset state that one "may not reproduce, sell, rent, lease, loan, distribute or sublicense or otherwise transfer any Data, in whole or in part, to any other party."^[The terms _do_ include an exception that one "may incorporate limited portions of the Data in scholarly, research or academic publications or for the purposes of news reporting" with attribution, but this would appear inadequate for the purposes of reproducibility.] But to ensure that one's work can be reproduced, assessed, and built upon by others, one must provide access to the raw data one employed.  The `pewdata` package cuts this knot by providing programmatic, reproducible access to Pew's datasets from within R. 
+The [Pew Research Center](https://www.pewresearch.org), in its [own words](https://www.pewresearch.org/about/), "is a nonpartisan fact tank that informs the public about the issues, attitudes[,] and trends shaping America and the world."  As a result, Pew is an invaluable source of survey data on a wide range of topics; the surveys it conducts are available on its website, generally after an embargo of about six months.  Researchers taking advantage of these datasets, however, are caught in a bind.  The terms and conditions for downloading any Pew dataset state that one "may not reproduce, sell, rent, lease, loan, distribute or sublicense or otherwise transfer any Data, in whole or in part, to any other party."^[The terms _do_ include an exception that one "may incorporate limited portions of the Data in scholarly, research or academic publications or for the purposes of news reporting" with attribution, but this would appear inadequate for the purposes of reproducibility.] But to ensure that one's work can be reproduced, assessed, and built upon by others, one must provide access to the raw data one employed.  The `pewdata` package cuts this knot by providing programmatic, reproducible access to Pew's datasets from within R. 
 
 ## Setup
 
@@ -19,7 +19,7 @@ After that information is input once, it will be entered automatically for any o
 
 To change this contact information within a session, one may set the argument `reset` to `TRUE` when running `pew_download` again, and the function will again request the required information. 
 
-An optional, but highly recommended, setup step is to add the contact information Pew requires to your [.Rprofile](http://www.statmethods.net/interface/customizing.html) as in the following example:
+An optional, but highly recommended, setup step is to add the contact information Pew requires to your [.Rprofile](https://support.rstudio.com/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf) as in the following example:
 
 ```{r eval = FALSE}
 options("pew_email" = "jherrera@uppermidwest.edu",
